@@ -1,0 +1,217 @@
+---
+title: <span style="color:#034a94"> **Indicadores de variabilidad o dispersión**</span>
+author: "Nivelatorio de Estadística"
+output:
+  html_document:
+    code_folding: hide
+    css: style.css
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, comment = NA)
+
+x1=c(27, 27, 28, 28, 34, 28, 26, 33, 24, 28, 25, 25, 33, 27, 34, 38, 24, 26, 22, 
+     23, 33, 23, 26, 26, 32, 33, 29, 30, 25, 23)
+x2=c(35,  25,  19,  17,  24,   17,  55,  25,  31,   35,  43,  28,  32,  19,  20, 
+     17, 25,  18,  21,  22,  17,  35,  29,  20,  54,  46,  24, 29, 40, 18)
+data2 <- data.frame(name2=c(rep("Grupo1",30), rep("Grupo2",30)),
+                    value2=c(x1,x2)
+)
+
+library(ggplot2)
+
+col1 ="#FF7F00"  # naranja - color primario 
+col2 ="#034A94"  # azul oscuro - color secundario
+col3 ="#0EB0C6"  # azul claro - color terciario
+col4 ="#686868"  # gris - color texto
+
+
+```
+
+</br></br>
+
+## <span style="color:#034A94">**Problema reconocimiento de grupo**</span>
+
+</br>
+
+Supongamos que tenemos dos grupos de estudiantes y solo se conoce  el promedio de sus edades 
+
+$$\bar{x}_{1} = \bar{x}_{2} = 28 \text{años}$$ 
+
+Lo que primero se piensa es que los dos grupos tienen una composición igual o muy parecida dado que coinciden en el promedio.  Pero no es así, los datos que se presentan a continuación tienen medias de 28,  pero corresponden a grupos diferentes.
+
+</br>
+
+|      |                                                                                                                       |
+|:-----|:----------------------------------------------------------------------------------------------------------------------|
+| G1   |27, 27, 28, 28, 34, 28, 26, 33, 24, 28, 25, 25, 33, 27, 34, 38, 24, 26, 22, 23, 33, 23, 26, 26, 32, 33, 29, 30, 25, 23 | 
+| G2   |35, 25, 19, 17, 24, 17, 55, 25, 31, 35, 43, 28, 32, 19, 20, 17, 25, 18, 21, 22, 17, 35, 29, 20, 54, 46, 24, 29, 40, 18 |
+
+</br></br>
+
+
+
+```{r, fig.height=3, fig.width=10}
+
+x1=c(27, 27, 28, 28, 34, 28, 26, 33, 24, 28, 25, 25, 33, 27, 34, 38, 24, 26, 22, 
+     23, 33, 23, 26, 26, 32, 33, 29, 30, 25, 23)
+x2=c(35,  25,  19,  17,  24,   17,  55,  25,  31,   35,  43,  28,  32,  19,  20, 
+     17, 25,  18,  21,  22,  17,  35,  29,  20,  54,  46,  24, 29, 40, 18)
+data2 <- data.frame(name2=c(rep("Grupo1",30), rep("Grupo2",30)),
+                    value2=c(x1,x2))
+
+p3=ggplot(data2, aes(x=value2, y=name2, color = name2)) +
+          geom_jitter(size=3, alpha=1) +
+          scale_color_manual(values=c("#FF7F00", "#034A94"))+
+    # Eliminar el eje y y el nombre de la variable en la leyenda
+        theme_minimal() +
+        theme(axis.title.y = element_blank(),
+        axis.title.x = element_blank(),
+        legend.title = element_blank(),
+        legend.position = "none")
+
+p3  
+```
+<center>
+**Figura 1.10**  Tiempos de carrera en minutos </br>
+<sub>Fuente : Carrera La Luz Cali - comparación de grupos </sub>
+</center>
+
+</br></br>
+
+Hace falta otro indicador que nos oriente sobre, qué tan dispersos son los datos con el fin de saber si se trata de grupos parecidos tanto en centro como en variabilidad. Esta necesidad la suplen los `indicadores de dispersión`.
+
+<br/> <br/>
+
+## <span style="color:#034A94">**Indicadores de dispersión**</span>
+
+</br>
+
+## <span style="color:#034A94">**Rango**</span>
+
+</br>
+
+El rango es el indicador de dispersión más facil de calcular, pues se obtiene restando los valores extremos de los datos: 
+
+$r = max(x) - min(x)$
+
+En el caso de los dos grupos:
+
+|               |   media ($\bar{x}$) | rango ($r$)         |
+|:--------------|:-------------------:|:-------------------:|
+|**Grupo 1**    |  $28$ años          | $16$ años           |
+|**Grupo 2**    |  $28$ años          | $38$ años           |  
+|               |                     |                     |
+
+</br>
+
+Es importante hacer notar que si además de la media conocemos también un indicador de dispersión, en este caso el rango, podemos caracterizar un poco más a los grupos. El rango es un indicador muy útil cuando se deben realizar cálculos rápidos.
+
+<br/> <br/>
+
+## <span style="color:#034A94">**Varianza**</span>
+
+</br>
+
+Es la medida de dispersión más utilizada en estadística y está definida por :
+
+$$s^{2}=\frac{1}{n-1} \sum_{i=1}^{n} (x_{i}-\bar{x})^{2}$$
+
+
+Se podría afirmar que la varianza es un promedio de los cuadrados de las diferencias entre los datos  y su media.
+
+<br/> <br/>
+
+### <span style="color:#034A94">**Propiedades de la varianza**</span>
+
++ $s^{2} = \frac{1}{n} \sum x_{i}^{2}- (\bar{x})^{2}$ 
+
++ La varianza es siempre no negativa  $s^{2} >=0$
+
++ La varianza de una constante es cero $s_{k}^{2}=0$
+
++ Si $y_{i}=k x_{i}$, entonces $s_{y}^{2}= k^{2} s_{x}^{2}$
+
++ Si $y_{i}=x_{i} + k$ , entonces  $s_{y}^{2} = s_{x}^{2}$
+
++ Si $z_{i} = a x_{i} + b y_{i}$, entonces $s_{z}^{2}$ = $a^{2}s_{x}^{2}$ + $b^{2}s_{y}^{2}$ + $2ab$ $cov(xy)$
+
+</br></br>
+
+El problema de la varianza es su **interpretación**, pues sus unidades quedan al cuadrado y en la mayoría de los casos no es posible interpretar los resultados. Por esta razón se optó por utilizar otra medidada de dispersión calculada a partir de la raíz cuadrada de la varianza.
+
+<br/> <br/>
+
+### <span style="color:#034A94">**Desviación estándar**</span> 
+
+</br>
+
+Es la raíz cuadrada de la varianza
+
+$$s=\sqrt{s^{2}}$$
+
+<div class="content-box-gray">
+### <span style="color:#686868">**Nota**</span> 
+Para la desviación estándar no aplican todas las propiedades de la varianza, dado que la raíz cuadrada no es una transformación lineal
+</div>
+
+</br
+
+|               |   media ($\bar{x}$) | varianza ($s^{2}$)  | desviación estandar ($s$)|
+|:--------------|:-------------------:|:-------------------:|:------------------------:|
+|**Grupo 1**    |  $28$ años          | $16.62$  años$^2$   |  $4.16$ años             |
+|**Grupo 2**    |  $28$ años          | $116.89$ años$^2$   |  $10.81$ años            |
+|               |                     |                     |                          |
+
+</br>
+
+Aunque la desviación estándar reduce el problema mencionado anteriormente debido a tener las mismas unidades de la variable, es útil para comparación de dos grupos con igual media.  En caso de que las medias sean diferentes es difícil poder realizar las comparaciones.
+
+<br/> <br/>
+
+## <span style="color:#034A94">**Coeficiente de variación**</span>
+
+</br>
+
+Por último, el coeficiente de variación es un indicador adimensional que indica que tan grande o que tan pequeña es la desviación estándar con respecto a su media en porcentaje y de esta manera podemos resolver el problema de la dispersión para cualquier grupo de datos.
+
+$$CV= \dfrac{s}{\bar{x}} \times 100 \% $$
+
+Existen diferentes reglas empíricas para la interpretación del coeficiente de variación. Una de ellas establece como límite el 20% para separar los grupos homogéneos de los heterogéneos, por lo general se utiliza un valor hasta el 20% para determinar que un grupo de datos son homogéneos, de lo contrario se calificará como heterogéneo.
+
+</br>
+
+### <span style="color:#FF7F00"> **Ejemplo**</span> 
+
+
+|               |   media ($\bar{x}$) | desviación estandar ($s$)| coeficiente de variación ($CV$)|
+|:--------------|:-------------------:|:------------------------:|:------------------------------:|
+|**Grupo 1**    |  $28$ años          | $4.16$ años              | $14.56$ %                      |
+|**Grupo 2**    |  $28$ años          | $10.81$ años             | $38.61$ %                      |
+|               |                     |                          |                                |
+
+
+</br>
+
+En este caso se obtienen valores diferentes para los dos grupos. El grupo 1 con un valor bajo ($14.56$ %), indicando una homogeneidad en los valores, mientras que el grupo 2 presenta un coeficiente de   $38.61$% que indica una mayor heterogeneidad.
+
+</br></br></br>
+
+## <span style="color:#034A94">**Código  R**</span>
+
+
+
+<pre>
+max(x1)-min(x1)       # rango
+var(x1)               # varianza
+sd(x1)                # desviación estándar
+sd(x1)/mean(x1)*100   # coeficiente de variación
+</pre>
+
+
+
+
+
+
+
+
